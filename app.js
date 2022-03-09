@@ -1,4 +1,4 @@
-var baseURL = "http://waterdata.capitolregionwd.org/KiWIS/KiWIS?datasource=0&service=kisters&type=queryServices&request="
+var baseURL = "https://waterdata.capitolregionwd.org/KiWIS/KiWIS?datasource=0&service=kisters&type=queryServices&request="
 
 // var getStations = baseURL+"getStationList&format=tabjson"
 var getParams = baseURL+"getParameterList&format=tabjson"
@@ -8,6 +8,26 @@ var script_ver = "KiWIS URL Builder 0.2"
 d3.select('title').text(script_ver)
 
 var wqm = false
+
+function sort_list(list,type) {
+    if (type=="dict") {
+        let [first] = Object.keys(list)
+        delete list[first]
+        var sorted_dict = {}
+        list["000_placeholder"] = "null"
+        sorted_dict = Object.fromEntries(Object.entries(list).sort())
+        
+        return sorted_dict
+    }
+    else if (type=="array") {
+        list[0] = "000_placeholder"
+        var sorted_list = []
+        sorted_list = list.sort()
+        return sorted_list
+
+    }
+}
+
 
 function get_ts_stations(x) {
     switch(x){
@@ -32,6 +52,8 @@ function get_ts_stations(x) {
         }
         else data.forEach(station=>{stations[station[0]]=station[1]})
         
+        stations = sort_list(stations,"dict")
+        // console.log(stations)
         // console.log(stations)
         d3.select("#stationSelect").append('select')
         d3.select("#stationSelect>select").attr('onchange','parameterSelect(this.value)')
@@ -63,6 +85,7 @@ function parameterSelect(selection) {
     d3.json(getParams+station+selection).then(data=>{
         // console.log(data)
         var parameters = data.map(parameter=>parameter[4])
+        parameters = sort_list(parameters,"array")
         // console.log(parameters)
         
         
@@ -89,7 +112,8 @@ function timeSeriesSelect(selection) {
         var timeSeries = {}
         data.forEach(ts=>{timeSeries[ts[4]]=[ts[3],ts[7],ts[8]]})
         d3.select('#timeseriesSelect').append('select')
-        d3.select('#timeseriesSelect>select').attr('onchange','dateRange(this.value)')         
+        d3.select('#timeseriesSelect>select').attr('onchange','dateRange(this.value)')
+        timeSeries = sort_list(timeSeries,"dict")         
         Object.entries(timeSeries).forEach(([key,value])=>{
         d3.select("#timeseriesSelect>select").append('option').text(key).property('value',value[0]).attr('from',value[1]).attr('to',value[2])
         d3.select('#timeseriesSelect>select>option').text("Select a Timeseries")
