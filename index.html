@@ -9,9 +9,19 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
+
 <body>
     <div class="container">
-        <div>
+        <div id="userPass">
+            <label for="user">KiWIS User Name (optional):</label>
+            <input type="text" id="user" name="user">
+            <br>
+            <label for="password">Password (if username supplied):</label>
+            <input type="text" id="pass" name="pass">
+            <br>
+            <button id="submit" onclick="user_pass()">Submit</button>
+        </div>
+        <div id="startOptions" style=display:none>
             <button id="ts" onclick="get_ts_stations(1)">Time Series</button>
             <button id="wq" onclick="get_ts_stations(2)">Water Quality</button>
         </div>

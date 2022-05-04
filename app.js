@@ -1,4 +1,5 @@
-var baseURL = "https://waterdata.capitolregionwd.org/KiWIS/KiWIS?datasource=0&service=kisters&type=queryServices&request="
+
+var baseURL = `https://waterdata.capitolregionwd.org/KiWIS/KiWIS?datasource=0&service=kisters&type=queryServices&request=`
 
 // var getStations = baseURL+"getStationList&format=tabjson"
 var getParams = baseURL+"getParameterList&format=tabjson"
@@ -8,6 +9,26 @@ var script_ver = "KiWIS URL Builder 0.2"
 d3.select('title').text(script_ver)
 
 var wqm = false
+
+
+
+function user_pass() {
+    var x = document.getElementById("startOptions");
+      if (x.style.display === "none") {
+       x.style.display = "block";
+      } 
+      var user = document.getElementById("user").value
+      var pass = document.getElementById("pass").value
+      if (user != "") {
+      console.log("entered")
+      var passString = `&kiUser=${user}&kiPassword=${pass}`
+      console.log(passString)
+      baseURL = `https://waterdata.capitolregionwd.org/KiWIS/KiWIS?datasource=0&service=kisters&type=queryServices${passString}&request=`
+      getParams = baseURL+"getParameterList&format=tabjson"
+      getTS_names = baseURL + "getTimeseriesList&format=tabjson"
+      }
+}
+
 
 function sort_list(list,type) {
     if (type=="dict") {
@@ -83,7 +104,7 @@ function parameterSelect(selection) {
         d3.select('#parameterSelect>select').attr('onchange','timeSeriesSelect(this.value)')
     }
     d3.json(getParams+station+selection).then(data=>{
-        // console.log(data)
+        console.log(data)
         var parameters = data.map(parameter=>parameter[4])
         parameters = sort_list(parameters,"array")
         // console.log(parameters)
