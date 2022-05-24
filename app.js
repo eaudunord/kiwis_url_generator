@@ -1,9 +1,9 @@
 
-var baseURL = `https://waterdata.capitolregionwd.org/KiWIS/KiWIS?datasource=0&service=kisters&type=queryServices&request=`
-
+// var baseURL = `https://waterdata.capitolregionwd.org/KiWIS/KiWIS?datasource=0&service=kisters&type=queryServices&request=`
+var baseURL = document.getElementById('baseURL').value
 // var getStations = baseURL+"getStationList&format=tabjson"
-var getParams = baseURL+"getParameterList&format=tabjson"
-var getTS_names = baseURL + "getTimeseriesList&format=tabjson"
+var getParams = ""
+var getTS_names = ""
 
 var script_ver = "KiWIS URL Builder 0.2"
 d3.select('title').text(script_ver)
@@ -17,16 +17,20 @@ function user_pass() {
       if (x.style.display === "none") {
        x.style.display = "block";
       } 
-      var user = document.getElementById("user").value
-      var pass = document.getElementById("pass").value
-      if (user != "") {
-      console.log("entered")
-      var passString = `&kiUser=${user}&kiPassword=${pass}`
-      console.log(passString)
-      baseURL = `https://waterdata.capitolregionwd.org/KiWIS/KiWIS?datasource=0&service=kisters&type=queryServices${passString}&request=`
-      getParams = baseURL+"getParameterList&format=tabjson"
-      getTS_names = baseURL + "getTimeseriesList&format=tabjson"
-      }
+    var user = document.getElementById("user").value
+    var pass = document.getElementById("pass").value
+    baseURL = document.getElementById("baseURL").value
+    getParams = baseURL+"getParameterList&format=tabjson"
+    getTS_names = baseURL + "getTimeseriesList&format=tabjson"
+        if (user != "") {
+          console.log("entered")
+          var passString = `&kiUser=${user}&kiPassword=${pass}`
+      
+          baseURL = `${baseURL.split("&request=")[0]}${passString}&request=`
+          console.log(baseURL)
+          getParams = baseURL+"getParameterList&format=tabjson"
+          getTS_names = baseURL + "getTimeseriesList&format=tabjson"
+          }
 }
 
 

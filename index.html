@@ -13,11 +13,14 @@
 <body>
     <div class="container">
         <div id="userPass">
+            <label for="baseURL">KiWIS Base URL (required):</label>
+            <input type="text" id="baseURL" name="baseURL" size="120" value="https://waterdata.capitolregionwd.org/KiWIS/KiWIS?datasource=0&service=kisters&type=queryServices&timezone=GMT-6&request=">
+            <br>
             <label for="user">KiWIS User Name (optional):</label>
             <input type="text" id="user" name="user">
             <br>
             <label for="password">Password (if username supplied):</label>
-            <input type="text" id="pass" name="pass">
+            <input type="password" id="pass" name="password">
             <br>
             <button id="submit" onclick="user_pass()">Submit</button>
         </div>
