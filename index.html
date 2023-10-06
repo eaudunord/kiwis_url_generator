@@ -73,13 +73,13 @@ function user_pass() {
         if (user != "") {
           console.log("entered")
           var passString = `&kiUser=${user}&kiPassword=${pass}`
-          headerAuth = {
-            headers: new Headers({
-              "Authorization": `Basic ${btoa(`${user}:${pass}`)}`
-            }),
-          }
+        //   headerAuth = {
+        //     headers: new Headers({
+        //       "Authorization": `Basic ${btoa(`${user}:${pass}`)}`
+        //     }),
+        //   }
       
-        //   baseURL = `${baseURL.split("&request=")[0]}${passString}&request=`
+          baseURL = `${baseURL.split("&request=")[0]}${passString}&request=`
           console.log(baseURL)
           getParams = baseURL+"getParameterList&format=tabjson"
           getTS_names = baseURL + "getTimeseriesList&format=tabjson"
