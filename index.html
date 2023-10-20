@@ -14,7 +14,7 @@
     <div class="container">
         <div id="userPass">
             <label for="baseURL">KiWIS Base URL (required):</label>
-            <input type="text" id="baseURL" name="baseURL" size="120" value="https://waterdata.capitolregionwd.org/KiWIS/KiWIS?datasource=0&service=kisters&type=queryServices&timezone=GMT-6&request=">
+            <input type="text" id="baseURL" name="baseURL" size="120" value="https://waterdata.capitolregionwd.org/KiWIS/KiWIS?datasource=0&service=kisters&type=queryServices&request=">
             <br>
             <label for="user">KiWIS User Name (optional):</label>
             <input type="text" id="user" name="user">
@@ -328,11 +328,17 @@ function measuringProgramSelect() {
     d3.selectAll('#formatSelect').html("")
     d3.selectAll("#measuringProgramSelect").html("")
     reset_values
-    var measuringPrograms = ['Any','Storm','Base','Snowmelt','Lake','Wetland']
-    d3.select('#measuringProgramSelect').append('select').attr('onchange','wqmdateRange()')
-    d3.select('#measuringProgramSelect>select').append('option').text("Select a Monitoring Program")
-    measuringPrograms.forEach(program=>{
-        d3.select('#measuringProgramSelect>select').append('option').text(program)
+    d3.json(baseURL+"getWqmMeasuringProgramList&format=tabjson",headerAuth).then(data=>{
+        console.log(data)
+        var measuringPrograms = data.map(program=>program[1])
+        measuringPrograms = sort_list(measuringPrograms,"array")
+    // var measuringPrograms = ['Any','Storm','Base','Snowmelt','Lake','Wetland']
+        d3.select('#measuringProgramSelect').append('select').attr('onchange','wqmdateRange()')
+        
+        measuringPrograms.forEach(program=>{
+            d3.select('#measuringProgramSelect>select').append('option').text(program)
+        })
+        d3.select('#measuringProgramSelect>select>option').text("Select a Monitoring Program")
     })
 }
 </script>
